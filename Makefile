@@ -8,7 +8,9 @@ TEST_OPTS = -I./test test/test_Arr_Student.cpp test/test_Student.cpp
 DOCG = doxygen
 DOC = Doxyfile
 
-C_OPTS = $(MAC_OPTS) -fsanitize=address -std=c++14 -gdwarf-4 -Wall -Wextra -Werror -Wformat-security -Wfloat-equal -Wshadow -Wconversion -Wlogical-not-parentheses -Wnull-dereference -Wno-unused-variable -Werror=vla $(LAB_OPTS)
+C_OPTS = $(MAC_OPTS) -std=c++14 -gdwarf-4 -Wall -Wextra -Werror -Wformat-security -Wfloat-equal -Wshadow -Wconversion -Wlogical-not-parentheses -Wnull-dereference -Wno-unused-variable -Werror=vla $(LAB_OPTS)
+
+F_SANITIZ = -fsanitize=address
 
 V_FLAGS = --tool=memcheck --leak-check=full --show-reachable=yes \
 	--undef-value-errors=yes --track-origins=no --child-silent-after-fork=no \
@@ -42,7 +44,7 @@ prep:
 compile: main.bin
 
 main.bin: src/main.cpp
-	$(CC) $(C_OPTS) $< -o ./dist/$@
+	$(CC) $(F_SANITIZ) $(C_OPTS) $< -o ./dist/$@
 	
 check:
 	clang-format --verbose -dry-run --Werror src/*
@@ -71,8 +73,9 @@ test: dist
 #-------------------------------------------------------------#
                              #(code-coverage)#
 
-leak-check_main1:clean prep main.bin
-	$(V_LAGS) $(V_FLAGS)  --log-file=dist/valgrind_main.log  ./dist/main.bin 
+leak-check_main1:src/main.cpp clean prep
+	$(CC) $(C_OPTS) $< -o ./dist/main.bin
+	$(V_LAGS) $(V_FLAGS) --log-file=dist/valgrind_main.log  ./dist/main.bin 
 leak-check_main2: 
 	$(V_LAGS) $(V_FLAGS) --xml-file=dist/valgrind_main.xml  --xml=yes cat ./assets/text.txt | ./dist/main.bin
 

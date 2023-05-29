@@ -35,20 +35,19 @@ void Arr_Student::remove_student(const unsigned int index)
 {
 	if (arr_students.size() < index || index <= 0)
 		return;
-
+	
+	delete arr_students[index - 1];
 	arr_students.erase(arr_students.cbegin() + index - 1);
 };
 
-string Arr_Student::get_student(unsigned int index) const
+Student Arr_Student::get_student(unsigned int index) const
 {
 	if (arr_students.size() < index || index <= 0) {
-		cout << endl << "Невірний номер" << endl;
-		return "Невірний номер";
+		Student student;
+		return student;
 	}
-
-	arr_students[index - 1]->write_on_screen();
-
-	return arr_students[index - 1]->get_name_student();
+	
+	return arr_students[index - 1][0];
 };
 
 void Arr_Student::print() const
@@ -64,18 +63,27 @@ void Arr_Student::print() const
 	}
 };
 
-int Arr_Student::find_student(unsigned int year) const
+vector<Student> Arr_Student::find_student(unsigned int year) const
 {
-	if (year < 2017 || year > 2022)
-		return 0;
-
 	int n_found_students = 0;
+	vector<Student> arr_found_students;
+	
+	if (year < 2017 || year > 2022)
+		return arr_found_students;
 
 	for (unsigned int i = 0, j = 0; i < arr_students.size(); i++)
-		if (arr_students[i]->get_enroll_year() == year) {
-			arr_students[i]->write_on_screen();
-			n_found_students++;
-		}
-
-	return n_found_students;
+		if (arr_students[i]->get_enroll_year() == year) 
+			arr_found_students.push_back(arr_students[i][0]);
+		
+	return arr_found_students;
 };
+
+
+
+
+
+
+
+
+
+

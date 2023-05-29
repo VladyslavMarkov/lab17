@@ -20,6 +20,7 @@ class Student {
 	enum cafedra name_building_cafedra;
 
     public:
+	
 	Student();
 	Student(unsigned int budget_edu, string name_student, string name_kurator, unsigned int enroll_year, string name_faculti, string group_n,
 		enum cafedra name_building_cafedra);

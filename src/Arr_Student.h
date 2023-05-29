@@ -10,9 +10,9 @@ class Arr_Student {
 	unsigned int get_n_student() const;
 	void add_student(Student &student);
 	void remove_student(const unsigned int index);
-	string get_student(unsigned int index) const;
+	Student get_student(unsigned int index) const;
 	void print() const;
-	int find_student(unsigned int year) const;
+	vector<Student> find_student(unsigned int year) const;
 };
 
 #endif

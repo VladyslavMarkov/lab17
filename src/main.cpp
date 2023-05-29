@@ -3,6 +3,13 @@
 #include <limits>
 #include <vector>
 
+#define ADD_ELEMENT 1
+#define REMOVE_ELEMENT 2
+#define PRINT_ONE_ELEMETN 3
+#define PRINT_ALL_ELEMETN 4
+#define FINDE_ELEMETN 5
+#define EXIT 6
+
 using std::cin;
 using std::cout;
 using std::endl;
@@ -19,15 +26,13 @@ int main()
 	int finish_program = 1;
 	Arr_Student arr_student;
 
-	if (finish_program == 1) {
+	{
 		cout << endl << "Демонстрація роботи конструкторів класу Student" << endl;
 		Student student1(1, "коля", "ваня", 2018, "БК", "23", Y1);
 		student1.write_on_screen();
 		Student student2(student1);
 		student2.write_on_screen();
 	}
-
-	cout << endl << "кількість студентів: "<< arr_student.get_n_student()<< endl;
 	
 	do {
 		int operation_n = 0;
@@ -45,13 +50,16 @@ int main()
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-		if (operation_n == 1) {
+		if (operation_n == ADD_ELEMENT) {
+		
 			Student *student = new Student;
 			student->write_info_student();
 
 			arr_student.add_student(*student);
 			arr_student.print();
-		} else if (operation_n == 2) {
+			
+		} else if (operation_n == REMOVE_ELEMENT) {
+		
 			unsigned int index = 0;
 
 			cout << endl << "Введіть номер студента: ";
@@ -61,18 +69,26 @@ int main()
 
 			arr_student.remove_student(index);
 			arr_student.print();
-		} else if (operation_n == 3) {
+			
+		} else if (operation_n == PRINT_ONE_ELEMETN) {
+		
 			unsigned int index = 0;
-
+				
 			cout << endl << "Введіть номер студента: ";
 			cin >> index;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-			arr_student.get_student(index);
-		} else if (operation_n == 4) {
+			
+			Student student = arr_student.get_student(index);
+			
+			student.write_on_screen();
+			
+		} else if (operation_n == PRINT_ALL_ELEMETN) {
+		
 			arr_student.print();
-		} else if (operation_n == 5) {
+			
+		} else if (operation_n == FINDE_ELEMETN) {
+	
 			unsigned int year = 0;
 
 			cout << endl << "Введіть рік вступники якого вас цікавлять: ";
@@ -80,10 +96,15 @@ int main()
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-			arr_student.find_student(year);
+			vector<Student> arr_found_students =  arr_student.find_student(year);
+			
+			for (unsigned int i = 0, j = 0; i < arr_found_students.size(); i++) 
+			arr_found_students[i].write_on_screen();
 
-		} else if (operation_n == 6) {
+		} else if (operation_n == EXIT) {
+		
 			finish_program = 0;
+			
 		} else
 			cout << endl << "Ви ввели некоректні дані" << endl;
 
